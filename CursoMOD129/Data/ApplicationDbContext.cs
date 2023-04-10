@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CursoMOD129.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace CursoMOD129.Data
 {
@@ -8,6 +10,11 @@ namespace CursoMOD129.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
         }
+
+
+        public DbSet<Cliente> Clients { get; set; } = default!;
+
     }
 }
