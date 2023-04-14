@@ -2,11 +2,12 @@
 
 namespace CursoMOD129.Models
 {
-    // Code First- Entity Framework -ORM -> OBJECT RELATIONAL MAPP
-    public class Cliente
+    public class TeamMember
     {
+
         public int ID { get; set; }
 
+        [Display(Name="Fullname")]
         [StringLength(255)]
         [Required]
         public string Name { get; set; }
@@ -14,15 +15,17 @@ namespace CursoMOD129.Models
 
         [DataType(DataType.Date)]
         [Required]
-        public DateTime Birthday  { get;set; }
+        public DateTime Birthday { get; set; }
 
         [StringLength(100)]
         [Required]
         public string Address { get; set; }
 
+
+        [Display(Name = "Zip Code")]
         [StringLength(20)]
         [Required]
-        public string ZipCode { get; set; } 
+        public string ZipCode { get; set; }
 
 
 
@@ -34,7 +37,14 @@ namespace CursoMOD129.Models
         [Required]
         public string NIF { get; set; }
 
-        [StringLength(255)]
-        public string? HealthCareNumber { get; set; }  
+        [Required]
+        public int WorkRoleID { get; set; }
+
+        public WorkRole WorkRole{ get; set; }
+
+       
+        public  Specialty? Specialty { get; set; }
+
+
     }
 }

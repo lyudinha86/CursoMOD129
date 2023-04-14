@@ -15,6 +15,8 @@ namespace CursoMOD129.Data
 
 
         public DbSet<Cliente> Clients { get; set; } = default!;
+        public DbSet<WorkRole> WorkRoles { get; set; } = default!;
+        public DbSet<TeamMember> TeamMembers { get; set; } = default!;
 
     }
 }
