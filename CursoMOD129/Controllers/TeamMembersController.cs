@@ -35,17 +35,20 @@ namespace CursoMOD129.Controllers
         {
 
             ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
+            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic"); // SelectList * top(1) from WorkRoles where Name = "Medic"
+            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Create(TeamMember newTeamMember ) 
         {
-            if(newTeamMember.IsSpecialtyValid(_context))
+            if(!newTeamMember.IsSpecialtyValid(_context))
             {
                 ViewData["IaSpecialtyValidError"] = "Specialty is not valid!";
             }
-            if(ModelState.IsValid )
+             else if(ModelState.IsValid )
             {
 
                 _context.Add(newTeamMember);
@@ -56,6 +59,12 @@ namespace CursoMOD129.Controllers
             ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
             return View(newTeamMember);
 
+        }
+
+        public IActionResult Edit(int id)
+        {
+           
+            return View("Create");
         }
     }
 }
