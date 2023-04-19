@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using CursoMOD129.Data;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace CursoMOD129.Models
@@ -49,6 +50,18 @@ namespace CursoMOD129.Models
        
         public  Specialty? Specialty { get; set; }
 
+        public bool IsSpecialtyValid(ApplicationDbContext context)
+        {
+            WorkRole medicWorkRole = context.WorkRoles.Single(wr => wr.Name == "Medic");
+
+            if(this.WorkRoleID==medicWorkRole.ID)
+            {
+                return this.Specialty == null;
+
+            }
+          
+            return this.Specialty != null;
+        }
 
     }
 }

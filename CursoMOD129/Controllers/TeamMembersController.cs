@@ -20,9 +20,15 @@ namespace CursoMOD129.Controllers
                 .TeamMembers
                 .Include(tm => tm.WorkRole)
                 .ToList();
+            foreach (var teamMember in teamMembers)
+            {
+                var x = teamMember.IsSpecialtyValid(_context);
+            Console.WriteLine(x);
+            }
 
             return View(teamMembers);
         }
+        
         //Get:TeamMembers/Create
 
         public IActionResult Create()
@@ -35,13 +41,19 @@ namespace CursoMOD129.Controllers
         [HttpPost]
         public IActionResult Create(TeamMember newTeamMember ) 
         {
-            if(ModelState.IsValid)
+            if(newTeamMember.IsSpecialtyValid(_context))
             {
+                ViewData["IaSpecialtyValidError"] = "Specialty is not valid!";
+            }
+            if(ModelState.IsValid )
+            {
+
                 _context.Add(newTeamMember);
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
             return View(newTeamMember);
 
         }
