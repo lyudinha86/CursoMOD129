@@ -35,6 +35,7 @@ namespace CursoMOD129.Models
         public string NIF { get; set; }
 
         [StringLength(255)]
+
         public string? HealthCareNumber { get; set; }  
     }
 }
