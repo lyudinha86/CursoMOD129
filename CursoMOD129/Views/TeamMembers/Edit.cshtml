@@ -1,6 +1,6 @@
 ﻿@model CursoMOD129.Models.TeamMember
 
-<h1>Create</h1>
+<h1>Edit</h1>
 
 <h4>Team Member</h4>
 
@@ -12,7 +12,7 @@
 
 
 
-        <form asp-action="Create">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
@@ -74,7 +74,7 @@
             </div>
 
             <div class=" form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Edit" class="btn btn-primary" />
 
             </div>
 </form>
@@ -86,6 +86,8 @@
 
     <script type="text/javascript" on-content-loaded="true">
         var medicWorkRoleID = @(ViewData["MedicWorkRoleID"]);
+        var teamMemberWorkRoleID=@(Model.WorkRoleID);
+        var formGroupSpecialty =$("#form-group-specialty")
 
         $("select#WorkRoleID").change((e) => {
             console.log($("select#WorkRoleID").val());
@@ -105,7 +107,13 @@
             }
         });
 
-        @* Initialization of Specialty as Generalist*@
-            $("select#Specialty").val("@((int)Specialty.Generalist)");
+        
+        if (teamMemberWorkRoleID == medicWorkRoleID){
+            formGroupSpecialty.css('visibility', 'visible');
+        }
+        else{
+            formGroupSpecialty.css('visibility', 'hidden');
+        }
+        $("select#Specialty").val("@((int)Specialty.Generalist)");
 </script>
 }
