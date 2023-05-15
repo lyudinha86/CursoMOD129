@@ -20,35 +20,31 @@ namespace CursoMOD129.Controllers
                 .TeamMembers
                 .Include(tm => tm.WorkRole)
                 .ToList();
-            foreach (var teamMember in teamMembers)
-            {
-                var x = teamMember.IsSpecialtyValid(_context);
-            Console.WriteLine(x);
-            }
+
+            SetupMedicWorkRoleID();
+
 
             return View(teamMembers);
         }
-        
-        //Get:TeamMembers/Create
 
+        //Get:TeamMembers/Create
         public IActionResult Create()
         {
-
-            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
-            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic"); // SelectList * top(1) from WorkRoles where Name = "Medic"
-            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
+            SetupTeamMember();
 
             return View();
         }
 
+
+
         [HttpPost]
-        public IActionResult Create(TeamMember newTeamMember ) 
+        public IActionResult Create(TeamMember newTeamMember)
         {
-            if(!newTeamMember.IsSpecialtyValid(_context))
+            if (!newTeamMember.IsSpecialtyValid(_context))
             {
-                ViewData["IsSpecialtyValidError"] = "Specialty is not valid!";
+                ViewData["IaSpecialtyValidError"] = "Specialty is not valid!";
             }
-             else if(ModelState.IsValid )
+            else if (ModelState.IsValid)
             {
 
                 _context.Add(newTeamMember);
@@ -63,52 +59,47 @@ namespace CursoMOD129.Controllers
 
         public IActionResult Edit(int id)
         {
-           TeamMember? teamMember =_context.TeamMembers.Find(id);
+            TeamMember? teamMember = _context.TeamMembers.Find(id);
             if (teamMember == null)
             {
-                return NotFound();  
+                return NotFound();
             }
 
-            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
-            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic");
-            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
+            SetupTeamMember();
+
             return View(teamMember);
         }
+
         [HttpPost]
         public IActionResult Edit(TeamMember editingTeamMember)
         {
             if (!editingTeamMember.IsSpecialtyValid(_context))
             {
-                ViewData["IsSpecialtyValidError"] = "Specialty is not valid!";
+                ViewData["IaSpecialtyValidError"] = "Specialty is not valid!";
             }
             else if (ModelState.IsValid)
             {
+
                 _context.TeamMembers.Update(editingTeamMember);
                 _context.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
-            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic");
-            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
 
-
+            SetupTeamMember();
 
             return View(editingTeamMember);
         }
 
-        //Get: TeamMembers/Delete/id
         public IActionResult Delete(int id)
         {
-            TeamMember? teamMember=_context.TeamMembers.Find(id);
-
+            TeamMember? teamMember = _context.TeamMembers.Find(id);
             if (teamMember == null)
             {
                 return NotFound();
             }
-            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
-            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic"); // SelectList * top(1) from WorkRoles where Name = "Medic"
-            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
+
+            SetupTeamMember();
 
             return View(teamMember);
         }
@@ -117,14 +108,30 @@ namespace CursoMOD129.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             TeamMember? deletingTeamMember = _context.TeamMembers.Find(id);
-            if(deletingTeamMember != null)
-            { 
+
+            if (deletingTeamMember != null)
+            {
                 _context.TeamMembers.Remove(deletingTeamMember);
                 _context.SaveChanges();
-            
             }
+
             return RedirectToAction(nameof(Index));
         }
 
+
+
+        private void SetupTeamMember()
+        {
+            ViewData["WorkRoleID"] = new SelectList(_context.WorkRoles, "ID", "Name");
+            SetupMedicWorkRoleID();
+        }
+
+
+        private void SetupMedicWorkRoleID()
+        {
+            WorkRole medicWorkRole = _context.WorkRoles.First(wr => wr.Name == "Medic"); // SelectList * top(1) from WorkRoles where Name = "Medic"
+            ViewData["MedicWorkRoleID"] = medicWorkRole.ID;
+        }
     }
+
 }
